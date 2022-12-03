@@ -2,7 +2,7 @@
 #include "bmp_180.h"
 #include "bmp180.h"
 
-#define BMP_P0              (101325.0 + 1900.0)
+#define BMP_P0              (1013.25)
 #define BMP_POWER           (1 / 5.257)
 #define BMP_FAHRENHEIT      (273.15)
 #define BMP_DENOMINATOR     (0.0065)
@@ -38,7 +38,7 @@ uint8_t BMP_GetAirPressure(float *airPressure) {
 }
 
 uint8_t BMP_GetAltitude(float *temperature, float *airPressure, float *altitude) {
-    *altitude = (1 - pow(*airPressure * 100.0 / BMP_P0, BMP_POWER)) * (*temperature + BMP_FAHRENHEIT) / BMP_DENOMINATOR;
+    *altitude = (pow(BMP_P0 / (*airPressure), BMP_POWER) - 1) * (*temperature + BMP_FAHRENHEIT) / BMP_DENOMINATOR;
     return 0;
 }
 
